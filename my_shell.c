@@ -5,7 +5,6 @@
 /* Print the prompt ">>> " and read a line of characters
    from stdin. */
 int getcmd(char *buf, int nbuf) {
-  // ##### Place your code here
   write(2, ">>> ", 4);
   
   for (int count=0; count < nbuf-1; count++){
@@ -41,7 +40,6 @@ void run_command(char *buf, int nbuf, int *pcp) {
   int numargs = 0;
   /* Flags to mark word start/end */
   int ws = 1;
-  //int we = 0;
 
   /* Flags to mark redirection direction */
   int redirection_left = 0;
@@ -64,7 +62,6 @@ void run_command(char *buf, int nbuf, int *pcp) {
     /* Parse the current character and set-up various flags:
        sequence_cmd, redirection, pipe_cmd and similar. */
 
-    /* ##### Place your code here. */
     if (buf[i] == '<'){
       redirection_left = 1;
       if (!ws) {
@@ -112,12 +109,10 @@ void run_command(char *buf, int nbuf, int *pcp) {
     if (!(redirection_left || redirection_right)) {
       /* No redirection, continue parsing command. */
     
-      // Place your code here.
       continue;  
     } else {
       /* Redirection command. Capture the file names. */
 
-      // ##### Place your code here.
       if (redirection_left){
         for (int j =i+1; j < nbuf; j++){
           if (buf[j] == ' '){
@@ -170,8 +165,7 @@ void run_command(char *buf, int nbuf, int *pcp) {
   if (sequence_cmd) {
     sequence_cmd = 0;
     if (fork() != 0) {
-      wait(0);
-      // ##### Place your code here.
+      wait(0)
       // Call run_command recursively
       run_command(&buf[i+1], nbuf-i-1, pcp);
 
@@ -190,7 +184,6 @@ void run_command(char *buf, int nbuf, int *pcp) {
     close(fd);
   }
   if (redirection_right) {
-    // ##### Place your code here.
     int fd = open(file_name_r, O_WRONLY | O_CREATE | O_TRUNC);
     close(1);
     dup(fd);
@@ -206,8 +199,7 @@ void run_command(char *buf, int nbuf, int *pcp) {
   */
 
 
-  if (strcmp(arguments[0], "cd") == 0) {
-    // ##### Place your code here.
+  if (strcmp(arguments[0], "cd") == 0) 
     write(pcp[1], arguments[1], strlen(arguments[1])+1);
     exit(2);
   } else {
@@ -217,7 +209,6 @@ void run_command(char *buf, int nbuf, int *pcp) {
     */
 
     if (pipe_cmd) {
-      // ##### Place your code here.
             pipe(p);
 
       if (fork()==0){
@@ -241,8 +232,7 @@ void run_command(char *buf, int nbuf, int *pcp) {
       wait(0);
       wait(0);
 
-    } else {
-      // ##### Place your code here.
+    } else 
       // Simple command; call exec()
       exec(arguments[0], arguments);
     }
@@ -270,7 +260,6 @@ int main(void) {
    
 
     int child_status;
-    // ##### Place your code here
     wait(&child_status);
     if (child_status == 2){
       read(pcp[0], buf, sizeof(buf));
